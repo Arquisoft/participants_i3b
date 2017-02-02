@@ -13,4 +13,6 @@ Skeleton of participants module
 
 - Herminio García González (@herminiogg)
 - Jose Emilio Labra Gayo (@labra)
+- Paula Tuñón Alba
+- Juan Francisco Piñera Ovejero
 
