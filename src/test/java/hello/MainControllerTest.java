@@ -42,11 +42,11 @@ public class MainControllerTest {
 		assertThat(response.getBody(), containsString("Hola"));
 	}
 	
-	@Test
+	/*@Test
 	public void getUser() throws Exception {
 		String userURI = base.toString() + "/user";  
 		ResponseEntity<String> response = template.getForEntity(userURI, String.class);
 		UserInfo expected = new UserInfo("pepe", id, login, password, firstName, lastName, email, 0);
-	}
+	}*/
 
 }
