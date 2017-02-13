@@ -2,12 +2,13 @@ package DbManagement;
 
 import hello.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.Repository;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Juan Francisco Piñera on 06/02/2017.
  */
-public class DBManagementClass implements  DBManagement {
+@Service
+public class DBServiceClass implements DBService {
 
     @Autowired
     UserInfoRepository repository;

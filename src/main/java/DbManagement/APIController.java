@@ -1,13 +1,22 @@
-package hello;
+package DbManagement;
 
 
-import DbManagement.SingletonDBManagement;
+import hello.CitizenLogin;
+import hello.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class APIController {
 
-    @RequestMapping(value="/user", method = RequestMethod.POST)
+    private final DBService service;
+
+    @Autowired
+    APIController(DBService service) {
+        this.service = service;
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
     public UserInfo user(@RequestBody CitizenLogin login) {
         //Hay que cambiar esto. Debería devolver el usuario si valida email y contraseña.

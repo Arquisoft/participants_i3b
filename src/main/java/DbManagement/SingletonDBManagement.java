@@ -1,12 +1,17 @@
 package DbManagement;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
  * Created by Juan Francisco Piñera on 06/02/2017.
  */
+@Component
 public class SingletonDBManagement {
-    private static DBManagement ourInstance = new DBManagementClass();
+    @Autowired
+    private static DBService ourInstance;
 
-    public static DBManagement getInstance() {
+    public static DBService getInstance() {
         return ourInstance;
     }
 
