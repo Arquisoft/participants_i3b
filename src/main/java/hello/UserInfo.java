@@ -1,5 +1,6 @@
 package hello;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
@@ -9,12 +10,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class UserInfo {
 	
 	// Log
+    @JsonIgnore
 	private static final Logger LOG = LoggerFactory.getLogger(UserInfo.class);
 
+    @JsonIgnore
     @Id
     private final long ID;
 
-    private final String login;
+    @JsonIgnore
     private final String password;
 
     private final String firstName;
@@ -24,9 +27,8 @@ public class UserInfo {
 
 
 
-    public UserInfo(String name, long id, String login, String password, String firstName, String lastName, String email, Integer age) {
+    public UserInfo(long id, String password, String firstName, String lastName, String email, Integer age) {
         ID = id;
-        this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,10 +38,6 @@ public class UserInfo {
 
     public long getID() {
         return ID;
-    }
-
-    public String getLogin() {
-        return login;
     }
 
     public String getPassword() {
