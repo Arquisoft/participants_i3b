@@ -6,16 +6,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection= "users")
 public class UserInfo {
-	
-	// Log
+
+    // Log
     @JsonIgnore
-	private static final Logger LOG = LoggerFactory.getLogger(UserInfo.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserInfo.class);
 
     @JsonIgnore
     @Id
-    private final long ID;
+    private String ID;
 
     @JsonIgnore
     private final String password;
@@ -26,9 +26,7 @@ public class UserInfo {
     private final Integer age;
 
 
-
-    public UserInfo(long id, String password, String firstName, String lastName, String email, Integer age) {
-        ID = id;
+    public UserInfo(String password, String firstName, String lastName, String email, Integer age) {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,9 +34,6 @@ public class UserInfo {
         this.age = age;
     }
 
-    public long getID() {
-        return ID;
-    }
 
     public String getPassword() {
         return password;
@@ -59,4 +54,5 @@ public class UserInfo {
     public Integer getAge() {
         return age;
     }
+
 }

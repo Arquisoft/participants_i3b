@@ -1,4 +1,4 @@
-package DbManagement;
+package repository;
 
 import hello.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +25,10 @@ public class DBServiceClass implements DBService {
             return user;
         else
             return null;
+    }
+
+    @Override
+    public void insertUser(UserInfo user) {
+        repository.insert(user);
     }
 }
