@@ -15,4 +15,4 @@ Skeleton of participants module
 - Jose Emilio Labra Gayo (@labra)
 - Paula Tuñón Alba
 - Juan Francisco Piñera Ovejero
-
+- Guillermo Rodríguez González 
