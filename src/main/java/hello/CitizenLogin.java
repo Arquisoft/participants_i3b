@@ -1,8 +1,5 @@
 package hello;
 
-/**
- * Created by Juan Francisco Piñera on 13/02/2017.
- */
 public class CitizenLogin {
 
     private String login, password;

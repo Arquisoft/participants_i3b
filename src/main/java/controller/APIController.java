@@ -4,6 +4,8 @@ package controller;
 import hello.CitizenLogin;
 import hello.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import repository.DBService;
 
@@ -19,23 +21,16 @@ public class APIController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    public UserInfo user(@RequestBody CitizenLogin login) {
-        //Try/Catch: If participant is not found, create a dummy user and return it (to test it is good)
-
-        UserInfo user;
-        try {
-            user = service.getParticipant(login.getLogin(), login.getPassword());
-        } catch (Exception e) {
-            String firstName = "dummy";
-            String pass = "dummy";
-            String lastName = "dummy";
-            String emai = "dummy@dummy.es";
-            int age = 0;
-
-            user = new UserInfo(pass, firstName, lastName, emai, age);
-            service.insertUser(user);
-        }
-        return user;
+    public ResponseEntity<UserInfo> user(@RequestBody CitizenLogin login) {
+    	// If the combination of email and password is correct, the data of the user is returned
+    	// If not, 404 NOT FOUND is returned
+    	
+        UserInfo user = service.getParticipant(login.getLogin(), login.getPassword());
+       
+        if (user == null)
+        	return new ResponseEntity<UserInfo>(HttpStatus.NOT_FOUND);
+        else
+        	return new ResponseEntity<UserInfo>(user, HttpStatus.OK);
 
     }
 
