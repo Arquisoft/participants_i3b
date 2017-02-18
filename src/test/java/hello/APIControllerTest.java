@@ -1,13 +1,18 @@
 package hello;
 
+import controller.APIController;
 import org.apache.tomcat.jni.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,6 +31,7 @@ import static org.junit.Assert.assertThat;
  * Created by guille on 17/02/2017.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@ComponentScan("repository")
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
@@ -35,6 +41,10 @@ public class APIControllerTest {
 
     private URL base;
     private RestTemplate template;
+
+    @Autowired
+    private DBService db;
+
 
     @Before
     public void setUp() throws Exception {
@@ -49,9 +59,8 @@ public class APIControllerTest {
         assertThat(response.getBody(), containsString("Hola"));
     }
 
-	@Test
-	public void testUser() throws Exception {
-        DBService db = new DBServiceClass();
+    @Test
+    public void testUser() throws Exception {
         UserInfo expected = new UserInfo("pass", "name", "surname", "ma@il.com", 20);
         db.insertUser(expected);
         String request = "{ login: \"ma@il.com\", password: \"pass\"}";
@@ -59,6 +68,7 @@ public class APIControllerTest {
 
         String userURI = base.toString() + "/user";
         ResponseEntity<UserInfo> response = template.postForEntity(userURI, request, UserInfo.class);
+        assertThat(response.getBody().getEmail(), equalTo(expected.getEmail())); //test si el email es igual
         assertThat(response.getBody(), equalTo(expected));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         //assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
