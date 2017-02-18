@@ -10,6 +10,20 @@ public class CitizenDTO {
 
     public String firstName;
     public String lastName;
+    public Integer age;
+    public String NIF;
+    public String email;
+
+    public CitizenDTO(){}
+
+    public CitizenDTO(UserInfo user){
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.age = user.getAge();
+        this.NIF = user.getNIF();
+        this.email= user.getEmail();
+    }
+
 
     public String getFirstName() {
         return firstName;
@@ -31,23 +45,4 @@ public class CitizenDTO {
         return email;
     }
 
-    public Integer age;
-    public String NIF;
-    public String email;
-
-    public CitizenDTO(){}
-
-    public CitizenDTO(UserInfo user){
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        Date today = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(user.getBirthDate());
-        int year = calendar.get(Calendar.YEAR);
-        calendar.setTime(today);
-        int todayYear = calendar.get(Calendar.YEAR);
-        this.age = todayYear-year;
-        this.NIF = user.getNIF();
-        this.email= user.getEmail();
-    }
 }

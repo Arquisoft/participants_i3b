@@ -77,7 +77,7 @@ public class UserInfo {
     }
     
     private void setBirthDate(String birthDate) {
-        DateFormat format = new SimpleDateFormat("d/M/y");
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
         try {
             date = format.parse(birthDate);
