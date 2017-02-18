@@ -1,6 +1,7 @@
 package controller;
 
 
+import hello.CitizenDTO;
 import hello.CitizenLogin;
 import hello.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,17 @@ public class APIController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<UserInfo> user(@RequestBody CitizenLogin login) {
+    public ResponseEntity<CitizenDTO> user(@RequestBody CitizenLogin login) {
     	// If the combination of email and password is correct, the data of the user is returned
     	// If not, 404 NOT FOUND is returned
     	
         UserInfo user = service.getParticipant(login.getLogin(), login.getPassword());
+        CitizenDTO citizen = new CitizenDTO(user);
        
         if (user == null)
-        	return new ResponseEntity<UserInfo>(HttpStatus.NOT_FOUND);
+        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
-        	return new ResponseEntity<UserInfo>(user, HttpStatus.OK);
+        	return new ResponseEntity<>(citizen, HttpStatus.OK);
 
     }
 
