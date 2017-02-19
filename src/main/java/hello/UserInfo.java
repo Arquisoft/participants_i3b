@@ -13,28 +13,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Document(collection= "users")
 public class UserInfo {
 
     // Log
-    @JsonIgnore
     private static final Logger LOG = LoggerFactory.getLogger(UserInfo.class);
 
     @Id
-    @JsonIgnore
     private String id;
 
-    @JsonIgnore
     private String password;
-    @JsonIgnore
     private Date birthDate;
-    @JsonIgnore
     private String address;
-    @JsonIgnore
     private String nationality;  
-    @JsonIgnore
     private int pollingStation;
     
     private String firstName;
@@ -43,7 +34,7 @@ public class UserInfo {
     private String NIF;
     private String email; 
 
-    private UserInfo() { }
+    private UserInfo() {}
     
     public UserInfo(String firstName, String lastName, String email, Date birthDate) {
         this.firstName = firstName;
