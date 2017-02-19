@@ -2,6 +2,7 @@ package hello;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -72,6 +73,13 @@ public class APIControllerTest {
         UserInfo userFromDB = db.getParticipant("ma@il2.com", "pass2");
         assertThat(user.getEmail(), equalTo(userFromDB.getEmail()));
         assertThat(user.getPassword(), equalTo(userFromDB.getPassword()));
+
+        boolean update = db.updateInfo(userFromDB.getId(), "pass2", "pass3");
+        userFromDB = db.getParticipant("ma@il2.com", "pass3");
+        assertThat(update, equalTo(true));
+        assertThat(userFromDB, notNullValue());
+        assertThat("ma@il2.com", equalTo(userFromDB.getEmail()));
+        assertThat("pass3", equalTo(userFromDB.getPassword()));
     }
 
     /*
@@ -106,7 +114,7 @@ public class APIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().encoding("UTF-8"))
-                .andExpect(content().json("{\"firstName\":\"name\",\"lastName\":\"surname\",\"age\":0,\"NIF\":null,\"email\":\"ma@il.com\"}")
+                .andExpect(content().json("{\"firstName\":\"name\",\"lastName\":\"surname\",\"age\":0,\"ID\":null,\"email\":\"ma@il.com\"}")
                 );
     }
 

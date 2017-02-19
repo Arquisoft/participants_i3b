@@ -12,8 +12,14 @@ public class DBServiceClass implements DBService {
     UserInfoRepository repository;
 
     @Override
-    public boolean updateInfo(long id, String oldPass, String newPass) {
-        return false;
+    public boolean updateInfo(String id, String oldPass, String newPass) {
+        UserInfo user = repository.findOne(id);
+        if (user.getPassword().equals(oldPass)) {
+            user.setPassword(newPass);
+            repository.save(user);
+            return true;
+        } else
+            return false;
     }
 
     @Override
