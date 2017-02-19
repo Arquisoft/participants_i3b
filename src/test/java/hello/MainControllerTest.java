@@ -17,6 +17,7 @@ import java.net.URL;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
@@ -29,9 +30,11 @@ public class MainControllerTest {
     private URL base;
     private RestTemplate template;
 
+    @SuppressWarnings("deprecation")
     @Before
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
+        //noinspection deprecation
         template = new TestRestTemplate();
     }
 

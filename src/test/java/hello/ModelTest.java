@@ -18,10 +18,8 @@ import repository.DBService;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by guille on 17/02/2017.
  */
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ComponentScan("repository")
 @SpringApplicationConfiguration(classes = Application.class)
@@ -49,9 +48,11 @@ public class ModelTest {
     private CitizenDTO citizenDTO;
 
 
+    @SuppressWarnings("deprecation")
     @Before
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
+        //noinspection deprecation
         template = new TestRestTemplate();
     }
 

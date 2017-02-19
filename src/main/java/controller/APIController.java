@@ -27,12 +27,12 @@ public class APIController {
     	// If not, 404 NOT FOUND is returned
     	
         UserInfo user = service.getParticipant(login.getLogin(), login.getPassword());
-        CitizenDTO citizen = new CitizenDTO(user);
-       
         if (user == null)
         	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        else
-        	return new ResponseEntity<>(citizen, HttpStatus.OK);
+        else {
+            CitizenDTO citizen = new CitizenDTO(user);
+            return new ResponseEntity<>(citizen, HttpStatus.OK);
+        }
 
     }
 

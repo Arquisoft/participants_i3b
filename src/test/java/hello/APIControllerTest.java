@@ -1,29 +1,24 @@
 package hello;
 
-import controller.APIController;
-import org.apache.tomcat.jni.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import repository.DBService;
-import repository.DBServiceClass;
 
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -31,9 +26,7 @@ import java.util.Date;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by guille on 17/02/2017.
  */
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ComponentScan("repository")
 @SpringApplicationConfiguration(classes = Application.class)
@@ -61,9 +55,11 @@ public class APIControllerTest {
     private DBService db;
 
 
+    @SuppressWarnings("deprecation")
     @Before
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
+        //noinspection deprecation
         template = new TestRestTemplate();
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
@@ -118,6 +114,18 @@ public class APIControllerTest {
                 .andExpect(content().encoding("UTF-8"))
                 .andExpect(content().json("{\"firstName\":\"name\",\"lastName\":\"surname\",\"age\":0,\"NIF\":null,\"email\":\"ma@il.com\",\"nif\":null}")
                 );
+    }
+
+    @Test
+    public void postTestNotFoundUser() throws Exception {
+        mockMvc.perform(post("/user")
+                .content("{ \"login\": \"ma@il.com\", \"password\": \"nothepassword\"}")
+                .contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
+                        MediaType.APPLICATION_JSON.getSubtype(),
+                        Charset.forName("utf8"))))
+                .andExpect(status().isNotFound()
+                );
+
     }
 
 

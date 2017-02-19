@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class DBServiceClass implements DBService {
 
     @Autowired
+    private
     UserInfoRepository repository;
 
     @Override
