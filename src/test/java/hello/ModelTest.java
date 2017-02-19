@@ -1,9 +1,17 @@
 package hello;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -13,20 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
-import repository.DBService;
 
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-/**
- * Created by guille on 17/02/2017.
- */
 @SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ComponentScan("repository")
@@ -40,15 +35,6 @@ public class ModelTest {
     private URL base;
     private RestTemplate template;
 
-    @Autowired
-    private DBService db;
-
-    private UserInfo user;
-    private CitizenLogin citizenLogin;
-    private CitizenDTO citizenDTO;
-
-
-    @SuppressWarnings("deprecation")
     @Before
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
@@ -58,7 +44,6 @@ public class ModelTest {
 
     @Test
     public void getLanding() throws Exception {
-        String userURI = base.toString() + "/user";
         ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
         assertThat(response.getBody(), containsString("Hola"));
     }
@@ -102,8 +87,11 @@ public class ModelTest {
         assertTrue(user3.getId().equals(ID));
         assertTrue(user3.getNIF().equals(NIF));
         assertEquals((Integer)user3.getPollingStation(),pollingStation);
-
-
+        assertTrue(user3.equals(user3));
+        assertTrue(!user2.toString().equals(user3.toString()));
+        assertTrue(user3.toString().equals(user3.toString()));
+        assertTrue(!(user2.hashCode() == user3.hashCode()));
+        assertTrue(user3.hashCode() == user3.hashCode());
     }
 
 }
