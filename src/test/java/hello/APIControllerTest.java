@@ -106,7 +106,7 @@ public class APIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().encoding("UTF-8"))
-                .andExpect(content().json("{\"firstName\":\"name\",\"lastName\":\"surname\",\"age\":0,\"NIF\":null,\"email\":\"ma@il.com\",\"nif\":null}")
+                .andExpect(content().json("{\"firstName\":\"name\",\"lastName\":\"surname\",\"age\":0,\"NIF\":null,\"email\":\"ma@il.com\"}")
                 );
     }
 
