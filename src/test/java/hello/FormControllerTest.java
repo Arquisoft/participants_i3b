@@ -2,10 +2,11 @@ package hello;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.URL;
@@ -38,7 +39,7 @@ import repository.DBService;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-public class APIControllerTest {
+public class FormControllerTest {
     @Value("${local.server.port}")
     private int port;
 
@@ -55,54 +56,33 @@ public class APIControllerTest {
     @Before
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
-        //noinspection deprecation
         template = new TestRestTemplate();
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Test
-    public void testDatabase() throws Exception {
-        UserInfo user = new UserInfo("pass2", "name", "surname", "ma@il2.com", new Date());
-        db.insertUser(user);
-        UserInfo userFromDB = db.getParticipant("ma@il2.com", "pass2");
-        assertThat(user.getEmail(), equalTo(userFromDB.getEmail()));
-        assertThat(user.getPassword(), equalTo(userFromDB.getPassword()));
-
-        boolean update = db.updateInfo(userFromDB.getId(), "pass2", "pass3");
-        userFromDB = db.getParticipant("ma@il2.com", "pass3");
-        assertThat(update, equalTo(true));
-        assertThat(userFromDB, notNullValue());
-        assertThat("ma@il2.com", equalTo(userFromDB.getEmail()));
-        assertThat("pass3", equalTo(userFromDB.getPassword()));
+    public void testLoginPage() throws Exception {
+        ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
+        assertThat(response.getBody(), containsString("Hola"));
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Username:")))
+                .andExpect(content().string(containsString("Password:")));
     }
 
     @Test
-    public void postTestUser() throws Exception {
+    public void testLoginCorrect() throws Exception {
         UserInfo user = new UserInfo("pass", "name", "surname", "ma@il.com", new Date());
         db.insertUser(user);
-        mockMvc.perform(post("/user")
-                .content("{ \"login\": \"ma@il.com\", \"password\": \"pass\"}")
-                .contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
-                        MediaType.APPLICATION_JSON.getSubtype(),
-                        Charset.forName("utf8"))))
+
+        mockMvc.perform(post("/login")
+                //.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .requestAttr("login", "ma@il.com")
+                .requestAttr("password", "pass"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(content().encoding("UTF-8"))
-                .andExpect(content().json("{\"firstName\":\"name\",\"lastName\":\"surname\",\"age\":0,\"ID\":null,\"email\":\"ma@il.com\"}")
-                );
+                .andExpect(model().attribute("name1", equalTo("name")))
+                .andExpect(content().string(containsString("Name:")))
+                .andExpect(content().string(containsString("Birthdate:")));
     }
-
-    @Test
-    public void postTestNotFoundUser() throws Exception {
-        mockMvc.perform(post("/user")
-                .content("{ \"login\": \"ma@il.com\", \"password\": \"nothepassword\"}")
-                .contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
-                        MediaType.APPLICATION_JSON.getSubtype(),
-                        Charset.forName("utf8"))))
-                .andExpect(status().isNotFound()
-                );
-
-    }
-
 
 }
