@@ -1,9 +1,7 @@
 package hello;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -43,14 +41,15 @@ public class ModelTest {
     }
 
     @Test
-    public void getLanding() throws Exception {
-        ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
-        assertThat(response.getBody(), containsString("Hola"));
-    }
-
-    @Test
     public void testUserInfo() throws Exception {
-        String password, firstName, lastName, email, address, nationality, ID, NIF;
+        String password;
+        String firstName;
+        String lastName;
+        String email;
+        String address;
+        String nationality;
+        String ID;
+        String NIF;
         Integer pollingStation;
         String birthDate;
         firstName = "name";
@@ -88,9 +87,9 @@ public class ModelTest {
         assertTrue(user3.getNIF().equals(NIF));
         assertEquals((Integer)user3.getPollingStation(),pollingStation);
         assertTrue(user3.equals(user3));
-        assertTrue(!user2.toString().equals(user3.toString()));
+        assertFalse(user2.toString().equals(user3.toString()));
         assertTrue(user3.toString().equals(user3.toString()));
-        assertTrue(!(user2.hashCode() == user3.hashCode()));
+        assertFalse(user2.hashCode() == user3.hashCode());
         assertTrue(user3.hashCode() == user3.hashCode());
     }
 

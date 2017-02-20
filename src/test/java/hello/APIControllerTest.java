@@ -61,12 +61,6 @@ public class APIControllerTest {
     }
 
     @Test
-    public void getLanding() throws Exception {
-        ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
-        assertThat(response.getBody(), containsString("Hola"));
-    }
-
-    @Test
     public void testDatabase() throws Exception {
         UserInfo user = new UserInfo("pass2", "name", "surname", "ma@il2.com", new Date());
         db.insertUser(user);
@@ -80,6 +74,11 @@ public class APIControllerTest {
         assertThat(userFromDB, notNullValue());
         assertThat("ma@il2.com", equalTo(userFromDB.getEmail()));
         assertThat("pass3", equalTo(userFromDB.getPassword()));
+
+
+        update = db.updateInfo(userFromDB.getId(), "pass2", "pass3");
+        assertThat(update, equalTo(false));
+
     }
 
     /*

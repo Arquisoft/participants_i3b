@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-public class MainControllerTest {
+public class FormControllerTest {
 
     @Value("${local.server.port}")
     private int port;
@@ -32,13 +32,14 @@ public class MainControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        this.base = new URL("http://localhost:" + port + "/");
+        this.base = new URL("http://localhost:" + port + "/login");
         //noinspection deprecation
         template = new TestRestTemplate();
     }
 
+
     @Test
-    public void getLanding() throws Exception {
+    public void getLogin() throws Exception {
         ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
         assertThat(response.getBody(), containsString("login"));
     }
