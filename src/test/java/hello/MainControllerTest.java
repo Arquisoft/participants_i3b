@@ -3,6 +3,7 @@ package hello;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -10,12 +11,18 @@ import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URL;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,18 +36,23 @@ public class MainControllerTest {
 
     private URL base;
     private RestTemplate template;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext context;
 
     @Before
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
-        //noinspection deprecation
         template = new TestRestTemplate();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Test
     public void getLanding() throws Exception {
         ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
-        assertThat(response.getBody(), containsString("login"));
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection());
     }
 
 }
