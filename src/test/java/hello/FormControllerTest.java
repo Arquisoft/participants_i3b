@@ -2,7 +2,6 @@ package hello;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -21,7 +20,6 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -70,13 +68,12 @@ public class FormControllerTest {
 
     @Test
     public void testLoginCorrect() throws Exception {
-        UserInfo user = new UserInfo("pass", "name", "surname", "ma@il.com", new Date());
+        UserInfo user = new UserInfo("pass", "name", "surname", "macorrect@il.com", new Date());
         db.insertUser(user);
 
         mockMvc.perform(post("/login")
-                //.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .requestAttr("login", "ma@il.com")
-                .requestAttr("password", "pass"))
+                .param("login", "macorrect@il.com")
+                .param("password", "pass"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("name1", equalTo("name")))
                 .andExpect(content().string(containsString("Name:")))
