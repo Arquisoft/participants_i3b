@@ -25,7 +25,7 @@ public class DBServiceClass implements DBService {
     @Override
     public UserInfo getParticipant(String email, String password) {
         UserInfo user = repository.findByEmail(email);
-        if (user.getPassword().equals(password))
+        if (user != null && user.getPassword().equals(password))
             return user;
         else
             return null;

@@ -76,8 +76,19 @@ public class FormControllerTest {
                 .param("password", "pass"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("name1", equalTo("name")))
+                .andExpect(model().attribute("name2", equalTo("surname")))
+                .andExpect(model().attribute("email", equalTo("macorrect@il.com")))
                 .andExpect(content().string(containsString("Name:")))
                 .andExpect(content().string(containsString("Birthdate:")));
+    }
+
+    @Test
+    public void testLoginIncorrect() throws Exception {
+        mockMvc.perform(post("/login")
+                .param("login", "inco@rre.ct")
+                .param("password", "user"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Invalid login details.")));
     }
 
 }
