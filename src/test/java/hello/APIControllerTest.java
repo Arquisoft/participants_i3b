@@ -74,6 +74,11 @@ public class APIControllerTest {
         assertThat(userFromDB, notNullValue());
         assertThat("ma@il2.com", equalTo(userFromDB.getEmail()));
         assertThat("pass3", equalTo(userFromDB.getPassword()));
+
+
+        update = db.updateInfo(userFromDB.getId(), "pass2", "pass3");
+        assertThat(update, equalTo(false));
+
     }
 
     @Test
