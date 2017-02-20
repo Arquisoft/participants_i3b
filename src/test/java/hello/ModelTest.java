@@ -91,4 +91,10 @@ public class ModelTest {
         assertTrue(user3.hashCode() == user3.hashCode());
     }
 
+    @Test
+    public void testCitizenDTO()throws Exception{
+        CitizenDTO citizen = new CitizenDTO();
+        assertNotNull(citizen);
+    }
+
 }
