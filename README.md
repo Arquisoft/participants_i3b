@@ -7,7 +7,7 @@
 
 [![Join the chat at https://gitter.im/Arquisoft/participants_i3b](https://badges.gitter.im/Arquisoft/participants_i3b.svg)](https://gitter.im/Arquisoft/participants_i3b?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Skeleton of participants module
+In order to run the application you need to download and install mongoDB. You must create an empty folder called "data\db" in the root of the partition where you installed mongo (Example: "C:\data\db"). If you already have it installed, please run in mongoConsole db.users.remove({}) before executing the tests. (Executing the tests provide mock data)
 
 # Authors
 
